@@ -123,59 +123,35 @@ WHERE unit = 'USD';
 SELECT * FROM tbl_gross_harvest_value_USD
 
 /*
-			Tables
+			Tables export
 */
 
-SELECT *
-FROM czech_trade_matrix ctm ;
-
-SELECT DISTINCT year
-FROM czech_import_all cia ;
-
-
-SELECT *
-FROM czech_import_export cie ;
-
-SELECT area
-		,element AS export_quantity
-		,item
-		,year
-		,value AS export_tonnes
-FROM czech_import_export cie
-WHERE element = 'Export Quantity';
-
-SELECT area
-		,element AS export_value
-		,item
-		,year
-		,value AS export_thousands_usd
-FROM czech_import_export cie
-WHERE element = 'Export Value';
-
-
-CREATE TABLE tbl_czech_import_export_home AS
+CREATE TABLE tbl_czech_export AS
 SELECT 
-    q.area
+    q.reporter_countries
+    ,q.partner_countries 
     ,q.item
     ,q.year
     ,q.export_tonnes
     ,v.export_thousands_usd
 FROM 
-    (SELECT area
+    (SELECT reporter_countries
+    	,partner_countries 
         ,item
         ,year
         ,value AS export_tonnes
-    FROM czech_import_export
-    WHERE element = 'Export Quantity') q
+    FROM czech_export
+    WHERE element = 'Export Quantity' AND value <> 0) q
 INNER JOIN 
-    (SELECT area
+    (SELECT reporter_countries
+    	,partner_countries 
         ,item
         ,year
         ,value AS export_thousands_usd
-    FROM czech_import_export
-    WHERE element = 'Export Value') v
-ON q.area = v.area AND q.item = v.item AND q.year = v.year;
+    FROM czech_export
+    WHERE element = 'Export Value' AND value <> 0) v
+ON q.partner_countries = v.partner_countries AND q.item = v.item AND q.year = v.year;
 
 
 SELECT *
-FROM tbl_czech_import_export_home ;
+FROM tbl_czech_export
