@@ -89,7 +89,7 @@ DROP VIEW country_percentage_2;
 
 
 
-CREATE TABLE tbl_czech_export2 AS
+CREATE TABLE czech_export AS
 SELECT 
 		ce.year
 		,reporter_countries
