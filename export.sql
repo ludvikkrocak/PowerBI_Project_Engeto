@@ -67,8 +67,8 @@ SELECT
 		,percentage_export_tonnes
 		,percentage_export_usd
 FROM czech_export ce
-LEFT JOIN country_percentage cp
-	ON ce.year = cp.year AND ce.partner_countries = cp.partner_countries AND ce.item = cp.item;
+INNER JOIN country_percentage cp
+	ON ce.year = cp.year AND ce.partner_countries = cp.partner_countries;
 		
 SELECT * FROM tbl_czech_export;
 
@@ -76,7 +76,7 @@ SELECT * FROM tbl_czech_export;
 
 
 
-SELECT * FROM country_percentage
+SELECT * FROM tbl_czech_export
 WHERE year = 2022 AND (partner_countries LIKE '%germany%')
 ORDER BY item;
 
